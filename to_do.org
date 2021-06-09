@@ -1,0 +1,36 @@
+* MINIRT
+
+** mandatory
+|-----------------------------+---------+--------+-----|
+| TASK                        | NOTES   | STATUS | T/P |
+|-----------------------------+---------+--------+-----|
+| windows management          |         | done   | t   |
+|-----------------------------+---------+--------+-----|
+| remove global var in rmrchr | :clown: | done   |     |
+|-----------------------------+---------+--------+-----|
+| make re lag                 |         |        |     |
+|-----------------------------+---------+--------+-----|
+| objects:                    |         |        |     |
+| -plane                      |         |        |     |
+| -sphere                     |         |        |     |
+| -cylinder                   |         |        |     |
+|-----------------------------+---------+--------+-----|
+| light management:           |         |        |     |
+| -spot brightness            |         |        |     |
+| -hard shadows               |         |        |     |
+| -ambiant lighting           |         |        |     |
+| -diffuse lighting           |         |        |     |
+| -phong                      | (bonus) |        |     |
+|-----------------------------+---------+--------+-----|
+| update parser:              |         | DONE   |     |
+| -singular declarations      | y       |        |     |
+| -empty lines                | y       |        |     |
+| -bonus file                 | y       |        |     |
+| -leaks                      | y       |        |     |
+|-----------------------------+---------+--------+-----|
+| bonus:                      |         |        |     |
+| -checkerboard               |         |        |     |
+| -multi spots + color        |         |        |     |
+| -2nd degree object          |         |        |     |
+| -bump map textures          |         |        |     |
+|-----------------------------+---------+--------+-----|
