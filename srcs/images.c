@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minirt.h"
+#include "../inc/miniRT.h"
 
 /*
 ** writes the red, green, and blue values of the pixel in the image string.
@@ -27,7 +27,7 @@ void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx_obj *mlx)
 	size_t	pos;
 
 	mlx->img_data = mlx_get_data_addr(mlx->img_ptr, &bpp,
-					&size_line, &endian);
+			&size_line, &endian);
 	pos = (pixel.y * size_line) + pixel.x * bpp / 8;
 	if (endian == 0)
 	{
@@ -50,15 +50,8 @@ void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx_obj *mlx)
 ** as argument.
 */
 
-void	handle_image(t_scene s, t_mlx_obj mlx)
+void	handle_image(t_mlx_obj mlx)
 {
-	if (s.save_image == true)
-	{
-		printf("saving stuff go here\n");
-	}
-	else
-	{
-		mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr,
-					mlx.img_ptr, 0, 0);
-	}
+	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr,
+		mlx.img_ptr, 0, 0);
 }
