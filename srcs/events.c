@@ -18,21 +18,12 @@
 
 void	free_mlx_ptrs(t_mlx_obj *mlx)
 {
-	if (mlx->img_ptr != NULL)
-	{
-		mlx_destroy_image(mlx->mlx_ptr, mlx->img_ptr);
-		free(mlx->img_ptr);
-	}
-	if (mlx->win_ptr != NULL)
-	{
-		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-		free(mlx->win_ptr);
-	}
-	if (mlx->mlx_ptr != NULL)
-	{
-		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-		free(mlx->mlx_ptr);
-	}
+//	if (mlx->img_ptr != NULL)
+//		mlx_destroy_image(mlx->mlx_ptr, mlx->img_ptr);
+//	printf("img free\n");
+	mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+	mlx_destroy_display(mlx->mlx_ptr);
+	free(mlx->mlx_ptr);
 }
 
 /*
@@ -45,15 +36,19 @@ int	keys_handler(int keycode, void *param)
 
 	all = param;
 	if (keycode == ESC)
-		exit_success(&all->mlx);
+		exit_success(&all);
 	return (0);
 }
 
-void	exit_failure(t_scene s, t_mlx_obj *mlx, char *error)
+void	exit_failure(t_mlx_obj *mlx, char *error)
 {
-	free(s.obj_list);
-	free(s.lights_list);
-	free_mlx_ptrs(mlx);
+	if (mlx->win_ptr != NULL)
+		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+	if (mlx->mlx_ptr != NULL)
+	{
+		mlx_destroy_display(mlx->mlx_ptr);
+		free(mlx->mlx_ptr);
+	}
 	printf("Error\nIssue encountered : %s\n", error);
 	perror("perror says");
 	exit(EXIT_FAILURE);
@@ -64,8 +59,9 @@ int	exit_success(void *param)
 	t_all	*all;
 
 	all = param;
-	free(all->scene.obj_list);
-	free(all->scene.lights_list);
-	free_mlx_ptrs(&all->mlx);
+	mlx_destroy_window(all->mlx.mlx_ptr, all->mlx.win_ptr);
+	mlx_destroy_display(all->mlx.mlx_ptr);
+	free(all->mlx.mlx_ptr);
 	exit(EXIT_SUCCESS);
+	return 0;
 }

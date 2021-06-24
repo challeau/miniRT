@@ -13,7 +13,7 @@
 #include "../inc/miniRT.h"
 
 /*
-** writes the red, green, and blue values of the pixel in the image string.
+** writes the RGB values of the pixel in the image string.
 ** if the endian is 0 (its value is system dependant), store the least
 ** significant byte first (blue).
 ** if the endian is 1, store the most significant byte first (alpha).
@@ -44,11 +44,6 @@ void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx_obj *mlx)
 		mlx->img_data[pos + 2] = (int)color.z;
 	}
 }
-
-/*
-** saves or displays the image depending on wether the -save flag was passed
-** as argument.
-*/
 
 void	handle_image(t_mlx_obj mlx)
 {

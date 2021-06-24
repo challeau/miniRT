@@ -25,9 +25,11 @@ void	set_defaults(t_scene *s)
 	s->cam = (t_cam){.pos = {0.0, 1.0, 0.0},
 		.orientation = {0.0, 0.0, 1.0},
 		.fov = 70};
+
 	s->lights_list = (t_light *)malloc(1 * sizeof(t_light));
 	if (s->lights_list == NULL)
 		parsing_error(*s, false, "allocation error.");
+
 	s->win_res = (t_vec2i){1920, 1080};
 	s->amb_light.ratio = 1;
 	s->obj_list = (t_object *)malloc(20 * sizeof(t_object));

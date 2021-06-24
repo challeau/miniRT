@@ -8,7 +8,7 @@
 |-----------------------------+---------+--------+-----|
 | remove global var in rmrchr | :clown: | done   |     |
 |-----------------------------+---------+--------+-----|
-| make re lag                 |         |        |     |
+| make re lag                 |         | DONE   | Y   |
 |-----------------------------+---------+--------+-----|
 | objects:                    |         |        |     |
 | -plane                      |         |        |     |
@@ -22,11 +22,17 @@
 | -diffuse lighting           |         |        |     |
 | -phong                      | (bonus) |        |     |
 |-----------------------------+---------+--------+-----|
-| update parser:              |         | DONE   |     |
+| update parser:              |         | DONE   | Y   |
 | -singular declarations      | y       |        |     |
 | -empty lines                | y       |        |     |
 | -bonus file                 | y       |        |     |
 | -leaks                      | y       |        |     |
+| -norm                       | y       |        |     |
+|-----------------------------+---------+--------+-----|
+| mlx related shit            |         |        |     |
+| -free img_data?             |         |        |     |
+| -check for leaks            |         |        |     |
+| -norm                       |         |        |     |
 |-----------------------------+---------+--------+-----|
 | bonus:                      |         |        |     |
 | -checkerboard               |         |        |     |

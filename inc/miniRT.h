@@ -53,12 +53,12 @@ enum		e_axis
 };
 
 /* mlx related */
-typedef struct s_mlx_obj{
+typedef struct s_mlx{
 	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img_ptr;
 	char	*img_data;
-}		t_mlx_obj;
+}		t_mlx;
 
 /* scene elements */
 typedef struct s_amb_light {
@@ -131,8 +131,8 @@ typedef struct s_scene {
 }		t_scene;
 
 typedef struct s_all {
-	t_mlx_obj	mlx;
-	t_scene		scene;
+	t_mlx			mlx;
+	t_scene		s;
 }		t_all;
 
 /* PARSER */
@@ -149,10 +149,7 @@ bool	set_cam(char **attributes, t_scene *scene, uint8_t *obj_num);
 bool	set_light(char **attributes, t_scene *scene, uint8_t *obj_num);
 bool	set_sphere(char **attributes, t_scene *scene, uint8_t *obj_num);
 bool	set_plane(char **attributes, t_scene *scene, uint8_t *obj_num);
-bool	set_square(char **attributes, t_scene *scene, uint8_t *obj_num);
 bool	set_cylinder(char **attributes, t_scene *scene, uint8_t *obj_num);
-bool	set_triangle(char **attributes, t_scene *scene, uint8_t *obj_num);
-bool	set_capsule(char **attributes, t_scene *scene, uint8_t *obj_num);
 
 /* parser utils */
 int		ft_compare_strs(const char *str1, const char *str2);
@@ -171,7 +168,6 @@ bool	check_vector_parsing(const char *attribute);
 
 /* RAYMARCHER */
 void	get_cam_look_at(t_cam *cam);
-
 t_rgb	get_pixel_color(t_vec2i pixel, t_scene s, t_cam cam);
 float	raymarch(t_cam cam, t_object *list);
 float	get_dist(t_vec3f p, t_object *list);
@@ -237,13 +233,13 @@ void	get_yaw_matrix(float theta, t_vec3f mat[3]);
 float	fclampf(float value, float min, float max);
 
 /* IMAGE */
-void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx_obj *mlx);
-void	handle_image(t_scene s, t_mlx_obj mlx);
+void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx *mlx);
+void	handle_image(t_mlx mlx);
 
 /* EVENTS */
-int		keys_handler(int keycode, void *param);
-
-void	exit_failure(t_scene s, t_mlx_obj *mlx, char *error);
-int		exit_success(void *param);
+/* int		keys_handler(int keycode, void *param); */
+/* void	free_mlx_ptrs(t_mlx_obj *mlx); */
+/* void	exit_failure(t_mlx_obj *mlx, char *error); */
+/* int		exit_success(void *param); */
 
 #endif

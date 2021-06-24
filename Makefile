@@ -1,5 +1,17 @@
 NAME			=	miniRT
 
+
+SRCS_MAIN_PATH		=	./srcs
+SRCS_MAIN_NAME		=	minirt.c	\
+				events.c	\
+				images.c
+
+OBJS_MAIN_PATH		=	objs
+OBJS_MAIN_NAME		=	$(SRCS_MAIN_NAME:.c=.o)
+
+SRCS_MAIN = $(addprefix $(SRCS_MAIN_PATH)/,$(SRCS_MAIN_NAME))
+OBJS_MAIN = $(addprefix $(OBJS_MAIN_PATH)/,$(OBJS_MAIN_NAME))
+
 SRCS_PARSER_PATH	=	./srcs/parser
 SRCS_PARSER_NAME	=	get_scene_from_file.c		\
 				checks_and_error_handling.c	\
@@ -8,7 +20,7 @@ SRCS_PARSER_NAME	=	get_scene_from_file.c		\
 				parser_utils.c			\
 				parser_utils_2.c
 
-OBJS_PARSER_PATH	=	objs
+OBJS_PARSER_PATH	=	objs/parser
 OBJS_PARSER_NAME	=	$(SRCS_PARSER_NAME:.c=.o)
 
 SRCS_PARSER = $(addprefix $(SRCS_PARSER_PATH)/,$(SRCS_PARSER_NAME))
@@ -38,11 +50,15 @@ LDLIBS		=	-lm -lX11 -lXext
 
 all: $(NAME)
 
-$(NAME): $(OBJS_PARSER)
+$(NAME): $(OBJS_MAIN) $(OBJS_PARSER)
 	@make -C inc/libft
 	@make -C inc/minilibx-linux
 	@$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 	@echo "Compilation \033[1;32mOK\033[m"
+
+$(OBJS_MAIN_PATH)/%.o: $(SRCS_MAIN_PATH)/%.c
+	@mkdir $(OBJS_MAIN_PATH)   2> /dev/null || true
+	@$(CC) $(CFLAGS) -c $< $(CPPFLAGS) -o $@
 
 $(OBJS_PARSER_PATH)/%.o: $(SRCS_PARSER_PATH)/%.c
 	@mkdir $(OBJS_PARSER_PATH)   2> /dev/null || true
@@ -51,8 +67,8 @@ $(OBJS_PARSER_PATH)/%.o: $(SRCS_PARSER_PATH)/%.c
 clean:
 	@make -C inc/libft clean
 	@make -C inc/minilibx-linux clean
-	@rm -f $(OBJS_PARSER)
-	@rmdir $(OBJS_PARSER_PATH)
+	@rm -f $(OBJS_MAIN) $(OBJS_PARSER)
+	@rmdir $(OBJS_PARSER_PATH) $(OBJS_MAIN_PATH)
 	@echo "Removing objs"
 
 fclean: clean
