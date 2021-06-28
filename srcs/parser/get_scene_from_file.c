@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_scene_from_file.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: challeau <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/13 19:42:46 by challeau          #+#    #+#             */
-/*   Updated: 2021/05/13 19:42:46 by challeau         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
@@ -48,8 +37,7 @@ void	set_defaults(t_scene *s, t_mlx *mlx)
 /*
 ** assigns value to each element in the source file.
 */
-
-void	handle_attributes(t_scene *s, char **attributes, t_mlx *mlx)
+char	*handle_attributes(t_scene *s, char **attributes)
 {
 	int				enum_val;
 	static uint8_t	obj_num = 0;
@@ -66,66 +54,69 @@ void	handle_attributes(t_scene *s, char **attributes, t_mlx *mlx)
 	elem_set_fcts[6] = &set_cylinder;
 	if (enum_val == -1)
 	{
-		ft_memdel_strptr(attributes);
-		parsing_error(s, true, mlx, "unknown object.");
+		printf("%d: %s\n", enum_val, attributes[0]);
+		return("unknown object.");
 	}
 	if (obj_num >= 20)
-	{
-		ft_memdel_strptr(attributes);
-		parsing_error(s, true, mlx, "too many objects.");
-	}
+		return("too many objects.");
 	if (elem_set_fcts[enum_val](attributes, s, &obj_num) == false)
-	{
-		ft_memdel_strptr(attributes);
-//\		while(1);
-		parsing_error(s, true, mlx, "couldnt initialize an element.");
-	}
+		return("couldnt initialize an element.");
+	return (NULL);
 }
 
-/*
-** reads each non-empty line of the file.
-** separates the attributes of the elements into a string array to be
-** manipulated later.
-*/
-
-void	parse_source_file(int fd, t_scene *s, t_mlx *mlx)
+char	**get_elements(int fd, t_scene *s, t_mlx *mlx)
 {
+	int		i;
 	int		ret;
 	char	*line;
-	char	**obj_attributes;
-	char **km;
-	int i =0;
+	char	**elements;
 
-	km = (char **)malloc(10 * sizeof(char*));
+	i = 0;
+	elements = (char**)malloc(50 * sizeof(char*));
 	ret = get_next_line(fd, &line);
 	while (ret >= 0)
 	{
-		km[i] = ft_strdup(line);
+		if (*line != 0)
+		{
+			elements[i] = ft_strdup(line);
+			i++;
+			elements[i] = NULL;
+		}
+		ft_memdel(line);
 		if (ret == 0)
 			break ;
-		ft_memdel(line);
 		ret = get_next_line(fd, &line);
 	}
-	i = 0;
-	while(km[i])
+	if (ret == -1)
 	{
-		if (km[i][0] != '\0')
-		{
-			obj_attributes = ft_split(km[i], ' ');
-			ft_memdel(km[i]);
-			handle_attributes(s, obj_attributes, mlx, km);
-			ft_memdel_strptr(obj_attributes);
-		}
-		else
-			ft_memdel(km[i]);
+		free(elements);
+		parsing_error(s, true, mlx, "couldn't open your file.");
 	}
-	ft_memdel_strptr(km);
-	/* 	if (ret == 0) */
-	/* 		break ; */
-	/* 	ret = get_next_line(fd, &line); */
-	/* } */
-	/* if (ret == -1) */
-	/* 	parsing_error(s, true, mlx, "cannot read your source file."); */
+	return (elements);
+}
+
+void	parse_source_file(int fd, t_scene *s, t_mlx *mlx)
+{
+	int	i;
+	char	**obj_attributes;
+	char	**elements;
+	char	*error;
+
+	i = 0;
+	elements = get_elements(fd, s, mlx);
+	while(elements[i] != NULL)
+	{
+		obj_attributes = ft_split(elements[i], ' ');
+		error = handle_attributes(s, obj_attributes);
+		ft_memdel_strptr(obj_attributes);
+		if (error != NULL)
+		{
+			ft_memdel_strptr(elements);
+			parsing_error(s, true, mlx, error);
+		}
+		i++;
+	}
+	ft_memdel_strptr(elements);
 }
 
 /*
