@@ -13,12 +13,13 @@ SRCS_MAIN = $(addprefix $(SRCS_MAIN_PATH)/,$(SRCS_MAIN_NAME))
 OBJS_MAIN = $(addprefix $(OBJS_MAIN_PATH)/,$(OBJS_MAIN_NAME))
 
 SRCS_PARSER_PATH	=	./srcs/parser
-SRCS_PARSER_NAME	=	get_scene_from_file.c		\
+SRCS_PARSER_NAME	=	gsff.c \
 				checks_and_error_handling.c	\
 				elem_set_fcts.c			\
 				elem_set_fcts_2.c		\
 				parser_utils.c			\
 				parser_utils_2.c
+# get_scene_from_file.c
 
 OBJS_PARSER_PATH	=	objs/parser
 OBJS_PARSER_NAME	=	$(SRCS_PARSER_NAME:.c=.o)

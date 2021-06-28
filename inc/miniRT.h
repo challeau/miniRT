@@ -139,7 +139,7 @@ typedef struct s_all {
 void	get_scene_from_file(int ac, char **av, t_scene *s, t_mlx *mlx);
 void	parse_source_file(int fd, t_scene *s, t_mlx *mlx);
 void	set_defaults(t_scene *s, t_mlx *mlx);
-void	handle_attributes(t_scene *s, char **attributes, t_mlx *mlx);
+char	*handle_attributes(t_scene *s, char **attributes);
 
 /* scene elements set fcts */
 bool	set_res(char **attributes, t_scene *scene, uint8_t *obj_num);
