@@ -136,11 +136,10 @@ typedef struct s_all {
 }		t_all;
 
 /* PARSER */
-void	get_scene_from_file(int ac, char **av, t_scene *s, void *mlx_ptr);
-void	parse_source_file(int fd, t_scene *s);
-void	set_defaults(t_scene *s);
-void	alloc_scene_lists(t_scene *scene);
-void	handle_attributes(t_scene *s, char **attributes);
+void	get_scene_from_file(int ac, char **av, t_scene *s, t_mlx *mlx);
+void	parse_source_file(int fd, t_scene *s, t_mlx *mlx);
+void	set_defaults(t_scene *s, t_mlx *mlx);
+void	handle_attributes(t_scene *s, char **attributes, t_mlx *mlx);
 
 /* scene elements set fcts */
 bool	set_res(char **attributes, t_scene *scene, uint8_t *obj_num);
@@ -160,7 +159,7 @@ int		id_index(const char *id);
 void	swap_strs(char **str1, char **str2);
 
 /* check fcts and error handling */
-void	parsing_error(t_scene s, bool is_scene_alloc, char *error);
+void	parsing_error(t_scene *s, bool is_scene_alloc, t_mlx *mlx, char *error);
 void	fit_res_to_screen(t_scene *s, void *mlx_ptr);
 void	check_necessary_elements(t_scene *s, void *mlx_ptr);
 bool	check_attributes(char **attributes, uint8_t expected_num);
@@ -234,7 +233,7 @@ float	fclampf(float value, float min, float max);
 
 /* IMAGE */
 void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx *mlx);
-void	handle_image(t_mlx mlx);
+/* void	handle_image(t_mlx mlx); */
 
 /* EVENTS */
 /* int		keys_handler(int keycode, void *param); */

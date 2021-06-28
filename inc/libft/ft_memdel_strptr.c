@@ -23,4 +23,5 @@ void	ft_memdel_strptr(char **array)
 		array_ptr++;
 	}
 	free(array);
+	array = NULL;
 }

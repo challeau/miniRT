@@ -17,7 +17,7 @@
 ** and objects lists.
 */
 
-void	set_defaults(t_scene *s)
+void	set_defaults(t_scene *s, t_mlx *mlx)
 {
 	uint8_t	i;
 
@@ -28,7 +28,7 @@ void	set_defaults(t_scene *s)
 
 	s->lights_list = (t_light *)malloc(1 * sizeof(t_light));
 	if (s->lights_list == NULL)
-		parsing_error(*s, false, "allocation error.");
+		parsing_error(s, false, mlx, "allocation error.");
 
 	s->win_res = (t_vec2i){1920, 1080};
 	s->amb_light.ratio = 1;
@@ -36,7 +36,7 @@ void	set_defaults(t_scene *s)
 	if (s->obj_list == NULL)
 	{
 		free(s->lights_list);
-		parsing_error(*s, false, "allocation error.");
+		parsing_error(s, false, mlx, "allocation error.");
 	}
 	while (i < 20)
 	{
@@ -49,7 +49,7 @@ void	set_defaults(t_scene *s)
 ** assigns value to each element in the source file.
 */
 
-void	handle_attributes(t_scene *s, char **attributes)
+void	handle_attributes(t_scene *s, char **attributes, t_mlx *mlx)
 {
 	int				enum_val;
 	static uint8_t	obj_num = 0;
@@ -65,11 +65,21 @@ void	handle_attributes(t_scene *s, char **attributes)
 	elem_set_fcts[5] = &set_plane;
 	elem_set_fcts[6] = &set_cylinder;
 	if (enum_val == -1)
-		parsing_error(*s, true, "unknown object.");
+	{
+		ft_memdel_strptr(attributes);
+		parsing_error(s, true, mlx, "unknown object.");
+	}
 	if (obj_num >= 20)
-		parsing_error(*s, true, "too many objects.");
+	{
+		ft_memdel_strptr(attributes);
+		parsing_error(s, true, mlx, "too many objects.");
+	}
 	if (elem_set_fcts[enum_val](attributes, s, &obj_num) == false)
-		parsing_error(*s, true, "couldnt initialize an element.");
+	{
+		ft_memdel_strptr(attributes);
+//\		while(1);
+		parsing_error(s, true, mlx, "couldnt initialize an element.");
+	}
 }
 
 /*
@@ -78,7 +88,7 @@ void	handle_attributes(t_scene *s, char **attributes)
 ** manipulated later.
 */
 
-void	parse_source_file(int fd, t_scene *s)
+void	parse_source_file(int fd, t_scene *s, t_mlx *mlx)
 {
 	int		ret;
 	char	*line;
@@ -90,33 +100,35 @@ void	parse_source_file(int fd, t_scene *s)
 		if (line[0] != '\0')
 		{
 			obj_attributes = ft_split(line, ' ');
-			handle_attributes(s, obj_attributes);
+			ft_memdel(line);
+			handle_attributes(s, obj_attributes, mlx);
 			ft_memdel_strptr(obj_attributes);
 		}
-		ft_memdel(line);
+		else
+			ft_memdel(line);
 		if (ret == 0)
 			break ;
 		ret = get_next_line(fd, &line);
 	}
 	if (ret == -1)
-		parsing_error(*s, true, "cannot read your source file.");
+		parsing_error(s, true, mlx, "cannot read your source file.");
 }
 
 /*
 ** checks arguments and opens the source file.
 */
 
-void	get_scene_from_file(int ac, char **av, t_scene *s, void *mlx_ptr)
+void	get_scene_from_file(int ac, char **av, t_scene *s, t_mlx *mlx)
 {
 	int	fd;
 
 	if (ac != 2)
-		parsing_error(*s, false, "wrong number of arguments.");
+		parsing_error(s, false, mlx, "wrong number of arguments.");
 	if (ft_compare_strs(av[1] + ft_strlen(av[1]) - 3, ".rt") != 1
 		|| ft_strlen(av[1] + ft_strchr(av[1], '.')) != 3)
-		parsing_error(*s, false, "argument must be a .rt file.");
+		parsing_error(s, false, mlx, "argument must be a .rt file.");
 	fd = open(av[1], O_RDONLY);
-	set_defaults(s);
-	parse_source_file(fd, s);
-	fit_res_to_screen(s, mlx_ptr);
+	set_defaults(s, mlx);
+	parse_source_file(fd, s, mlx);
+	fit_res_to_screen(s, mlx->mlx_ptr);
 }

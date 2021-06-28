@@ -16,13 +16,16 @@
 ** if an issue was encountered, frees the objects and cameras lists and exits.
 */
 
-void	parsing_error(t_scene s, bool is_scene_alloc, char *error)
+void	parsing_error(t_scene *s, bool is_scene_alloc, t_mlx *mlx, char *error)
 {
 	if (is_scene_alloc == true)
 	{
-		free(s.obj_list);
-		free(s.lights_list);
+		free(s->obj_list);
+		free(s->lights_list);
+
 	}
+	mlx_destroy_display(mlx->mlx_ptr);
+	free(mlx->mlx_ptr);
 	printf("Error\nIssue encountered while parsing: %s\n", error);
 	perror("perror says");
 	exit(EXIT_FAILURE);
