@@ -44,7 +44,3 @@ void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx *mlx)
 		mlx->img_data[pos + 2] = (int)color.z;
 	}
 }
-
-void	handle_image(t_mlx mlx)
-{
-}

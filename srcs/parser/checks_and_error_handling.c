@@ -45,8 +45,6 @@ void	fit_res_to_screen(t_scene *s, void *mlx_ptr)
 		s->win_res.x = screen_res.x;
 	if (s->win_res.y > screen_res.y)
 		s->win_res.y = screen_res.y;
-	s->win_res.x = s->win_res.x;
-	s->win_res.y = s->win_res.y;
 }
 
 /*

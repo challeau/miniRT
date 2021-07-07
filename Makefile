@@ -26,6 +26,33 @@ OBJS_PARSER_NAME	=	$(SRCS_PARSER_NAME:.c=.o)
 SRCS_PARSER = $(addprefix $(SRCS_PARSER_PATH)/,$(SRCS_PARSER_NAME))
 OBJS_PARSER = $(addprefix $(OBJS_PARSER_PATH)/,$(OBJS_PARSER_NAME))
 
+SRCS_UTILS_PATH		=	./srcs/utils
+SRCS_UTILS_NAME		=	floats.c		\
+				vectors.c		\
+				vectors_2.c		\
+				scal_on_vec_ops.c	\
+				vec_on_vec_ops.c	\
+				matrices.c		\
+				mat_ops.c
+
+OBJS_UTILS_PATH	=	objs/utils
+OBJS_UTILS_NAME	=	$(SRCS_UTILS_NAME:.c=.o)
+
+SRCS_UTILS = $(addprefix $(SRCS_UTILS_PATH)/,$(SRCS_UTILS_NAME))
+OBJS_UTILS = $(addprefix $(OBJS_UTILS_PATH)/,$(OBJS_UTILS_NAME))
+
+SRCS_RMRCH_PATH		=	./srcs/raymarcher
+SRCS_RMRCH_NAME		=	raymarcher.c		\
+				sdfs.c			\
+				get_light.c		\
+				raymarcher_utils.c
+
+OBJS_RMRCH_PATH	=	objs/raymarcher
+OBJS_RMRCH_NAME	=	$(SRCS_RMRCH_NAME:.c=.o)
+
+SRCS_RMRCH = $(addprefix $(SRCS_RMRCH_PATH)/,$(SRCS_RMRCH_NAME))
+OBJS_RMRCH = $(addprefix $(OBJS_RMRCH_PATH)/,$(OBJS_RMRCH_NAME))
+
 SRCS_BONUS_PATH		=	./bonus
 SRCS_BONUS_NAME		=	parser/get_scene_from_file_bonus.c		\
 				parser/checks_and_error_handling_bonus.c	\
@@ -50,7 +77,7 @@ LDLIBS		=	-lm -lX11 -lXext
 
 all: $(NAME)
 
-$(NAME): $(OBJS_MAIN) $(OBJS_PARSER)
+$(NAME): $(OBJS_MAIN) $(OBJS_PARSER) $(OBJS_UTILS) $(OBJS_RMRCH)
 	@make -C inc/libft
 	@make -C inc/minilibx-linux
 	@$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
@@ -64,11 +91,19 @@ $(OBJS_PARSER_PATH)/%.o: $(SRCS_PARSER_PATH)/%.c
 	@mkdir $(OBJS_PARSER_PATH)   2> /dev/null || true
 	@$(CC) $(CFLAGS) -c $< $(CPPFLAGS) -o $@
 
+$(OBJS_UTILS_PATH)/%.o: $(SRCS_UTILS_PATH)/%.c
+	@mkdir $(OBJS_UTILS_PATH)   2> /dev/null || true
+	@$(CC) $(CFLAGS) -c $< $(CPPFLAGS) -o $@
+
+$(OBJS_RMRCH_PATH)/%.o: $(SRCS_RMRCH_PATH)/%.c
+	@mkdir $(OBJS_RMRCH_PATH)   2> /dev/null || true
+	@$(CC) $(CFLAGS) -c $< $(CPPFLAGS) -o $@
+
 clean:
 	@make -C inc/libft clean
 	@make -C inc/minilibx-linux clean
-	@rm -f $(OBJS_MAIN) $(OBJS_PARSER)
-	@rmdir $(OBJS_PARSER_PATH) $(OBJS_MAIN_PATH)
+	@rm -f $(OBJS_PARSER) $(OBJS_UTILS) $(OBJS_RMRCH) $(OBJS_MAIN)
+	@rmdir $(OBJS_PARSER_PATH) $(OBJS_UTILS_PATH) $(OBJS_RMRCH_PATH) $(OBJS_MAIN_PATH)
 	@echo "Removing objs"
 
 fclean: clean

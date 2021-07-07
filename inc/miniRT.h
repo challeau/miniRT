@@ -167,9 +167,10 @@ bool	check_vector_parsing(const char *attribute);
 
 /* RAYMARCHER */
 void	get_cam_look_at(t_cam *cam);
+void	generate_image(t_mlx mlx, t_scene s);
 t_rgb	get_pixel_color(t_vec2i pixel, t_scene s, t_cam cam);
-float	raymarch(t_cam cam, t_object *list);
-float	get_dist(t_vec3f p, t_object *list);
+float	raymarch(t_cam cam, t_scene *s, t_object *list);
+float	get_dist(t_vec3f p, t_scene *s, t_object *list);
 
 /* signed distance functions */
 float	sdf_sphere(t_vec3f pos, t_object obj);
@@ -178,10 +179,9 @@ float	sdf_cylinder(t_vec3f pos, t_object obj);
 
 /* get_light */
 t_rgb	get_light(t_vec3f surf_point, t_scene s, t_rgb obj_color);
-t_rgb	ambient_light(t_amb_light amb_light, t_rgb obj_color);
-t_rgb	diffuse_light(t_vec3f surf_point, t_scene s, t_light light,
-			t_rgb obj_color);
-t_vec3f	get_surface_normal(t_vec3f p, t_object *list);
+t_rgb	diffuse_light(t_vec3f surf_point, t_scene s, t_light light);
+bool	get_shadow(t_vec3f surf_point, t_scene s, t_object *obj, t_light light);
+t_vec3f	get_surface_normal(t_vec3f p, t_scene s, t_object *list);
 
 /* utils */
 void	assign_sdfs_array(float (*(*sdfs)[__OBJ_TOTAL])(t_vec3f, t_object));
@@ -232,6 +232,7 @@ void	get_yaw_matrix(float theta, t_vec3f mat[3]);
 float	fclampf(float value, float min, float max);
 
 /* IMAGE */
+void	generate_image(t_mlx mlx, t_scene s);
 void	write_to_image(t_rgb color, t_vec2i pixel, t_mlx *mlx);
 /* void	handle_image(t_mlx mlx); */
 

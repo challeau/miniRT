@@ -1,5 +1,26 @@
 #include "../inc/miniRT.h"
 
+int	clean_exit(int keycode, t_mlx *mlx)
+{
+	if (keycode == ESC)
+	{
+		mlx_destroy_image(mlx->mlx_ptr, mlx->img_ptr);
+		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+		mlx_destroy_display(mlx->mlx_ptr);
+		free(mlx->mlx_ptr);
+	}
+	printf("exiting???\n");
+	exit(EXIT_SUCCESS);
+	return (1);
+}
+
+int	exit_failure(void)
+{
+	printf("Error\nIssue encountered while setting up the mlx.\n");
+	perror("perror says");
+	exit(EXIT_FAILURE);
+}
+
 bool	setup(t_mlx *mlx, t_scene *s, int ac, char **av)
 {
 	mlx->mlx_ptr = mlx_init();
@@ -16,28 +37,8 @@ bool	setup(t_mlx *mlx, t_scene *s, int ac, char **av)
 		free(s->lights_list);
 		return(false);
 	}
-	printf("setup ok\n");
+	printf("setup ok.\n");
 	return (true);
-}
-
-int	exit_failure(void)
-{
-	printf("Error\nIssue encountered while setting up the mlx.\n");
-	perror("perror says");
-	exit(EXIT_FAILURE);
-}
-
-int	clean_exit(int keycode, t_mlx *mlx)
-{
-	if (keycode == ESC)
-	{
-		mlx_destroy_image(mlx->mlx_ptr, mlx->img_ptr);
-		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-		mlx_destroy_display(mlx->mlx_ptr);
-		free(mlx->mlx_ptr);
-	}
-	exit(EXIT_SUCCESS);
-	return (1);
 }
 
 int	main(int ac, char **av)
@@ -48,12 +49,12 @@ int	main(int ac, char **av)
 	if (setup(&mlx, &s, ac, av) == false)
 		exit_failure();
 	printf("rendering...\n");
-//	generate_image(&mlx, &s);
-//	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr,
-//		mlx.img_ptr, 0, 0);
+	generate_image(mlx, s);
+	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr,
+		mlx.img_ptr, 0, 0);
 	free(s.obj_list);
 	free(s.lights_list);
-	mlx_key_hook(mlx.win_ptr, &clean_exit, &mlx);
+//	mlx_key_hook(mlx.win_ptr, &clean_exit, &mlx);
 	mlx_hook(mlx.win_ptr, 33, 1L << 2, clean_exit, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 }
