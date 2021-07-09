@@ -137,5 +137,5 @@ void	generate_image(t_mlx mlx, t_scene s)
 		pixel.x = 0;
 		pixel.y++;
 	}
-	printf("main loop exited. congrats.\n");
+	printf(">>> miniRT: main loop exited. congrats.\n");
 }
