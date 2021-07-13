@@ -20,7 +20,7 @@ int	id_index(const char *id)
 {
 	int					i;
 	static const char	*elem_id_array[__ELEM_TOTAL] = {"R", "A", "C",
-		"L", "sp", "pl", "cy"};
+		"L", "sp", "pl", "cy", "co"};
 
 	i = 0;
 	while (elem_id_array[i])

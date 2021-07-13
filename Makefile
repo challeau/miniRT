@@ -27,13 +27,16 @@ SRCS_PARSER = $(addprefix $(SRCS_PARSER_PATH)/,$(SRCS_PARSER_NAME))
 OBJS_PARSER = $(addprefix $(OBJS_PARSER_PATH)/,$(OBJS_PARSER_NAME))
 
 SRCS_UTILS_PATH		=	./srcs/utils
-SRCS_UTILS_NAME		=	floats.c		\
-				vectors.c		\
-				vectors_2.c		\
-				scal_on_vec_ops.c	\
-				vec_on_vec_ops.c	\
-				matrices.c		\
-				mat_ops.c
+SRCS_UTILS_NAME		=	mat3.c			\
+				maths_utils.c		\
+				vec2f.c			\
+				vec2f_ops.c		\
+				vec2f_scal_ops.c	\
+				vec3f.c			\
+				vec3f_ops.c		\
+				vec3f_scal_ops.c	\
+				vec4f.c			\
+				vec_mat_ops.c
 
 OBJS_UTILS_PATH	=	objs/utils
 OBJS_UTILS_NAME	=	$(SRCS_UTILS_NAME:.c=.o)

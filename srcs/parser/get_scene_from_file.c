@@ -52,11 +52,9 @@ char	*handle_attributes(t_scene *s, char **attributes)
 	elem_set_fcts[4] = &set_sphere;
 	elem_set_fcts[5] = &set_plane;
 	elem_set_fcts[6] = &set_cylinder;
+	elem_set_fcts[7] = &set_cone;
 	if (enum_val == -1)
-	{
-		printf("%d: %s\n", enum_val, attributes[0]);
 		return("unknown object.");
-	}
 	if (obj_num >= 20)
 		return("too many objects.");
 	if (elem_set_fcts[enum_val](attributes, s, &obj_num) == false)

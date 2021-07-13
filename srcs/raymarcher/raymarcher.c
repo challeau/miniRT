@@ -5,7 +5,6 @@
 ** retruns the smallest distance and assigns to g_hit_object the index of the
 ** object that is the closest.
 */
-
 float	get_dist(t_vec3f p, t_scene *s, t_object *list)
 {
 	uint8_t	i;
@@ -17,6 +16,7 @@ float	get_dist(t_vec3f p, t_scene *s, t_object *list)
 	sdfs[0] = &sdf_sphere;
 	sdfs[1] = &sdf_plane;
 	sdfs[2] = &sdf_cylinder;
+	sdfs[3] = &sdf_cone;
 
 	while (list[i].type != e_OBJ_NONE && i < 20)
 	{
@@ -34,7 +34,6 @@ float	get_dist(t_vec3f p, t_scene *s, t_object *list)
 ** with the distance to the closest object (dist_scene) until a surface is hit
 ** or the distance travelled is greater than 100 units.
 */
-
 float	raymarch(t_cam cam, t_scene *s, t_object *list)
 {
 	size_t	i;
@@ -61,10 +60,8 @@ float	raymarch(t_cam cam, t_scene *s, t_object *list)
 ** Gram-Schmidt process, creates the vectors that form the view/camera space.
 ** aka the look at.
 */
-
 void	get_cam_look_at(t_cam *cam)
 {
-	//switch sub to move the other way ig
 	t_vec3f cam_back = vec3f_normalize(vec3f_sub_vec((t_vec3f){0,0,0},
 							cam->pos));
 	t_vec3f cam_right = vec3f_normalize(
@@ -87,7 +84,6 @@ void	get_cam_look_at(t_cam *cam)
 ** n = vec3f_add_scal(vec3f_mult_scal(n, 0.5), 0.5);
 ** color = vec3f_mult_scal(vec3f_add_scal(vec3f_mult_scal(n, 0.5), 0.5), 255);
 */
-
 t_rgb	get_pixel_color(t_vec2i pixel, t_scene s, t_cam cam)
 {
 	t_vec3f	uv;
