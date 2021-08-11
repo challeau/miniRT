@@ -90,10 +90,14 @@ t_rgb	get_pixel_color(t_vec2i pixel, t_scene s, t_cam cam)
 	t_rgb		color;
 	float		dist_scene;
 	t_vec3f	surf_point;
+	t_vec3f	theta = cam.orientation;
 
 	uv = (t_vec3f){(pixel.x - 0.5 * s.win_res.x) / s.win_res.y,
 			-((pixel.y - 0.5 * s.win_res.y) / s.win_res.y), 1};
 	cam.orientation =  vec3f_normalize((t_vec3f){uv.x, uv.y, 1});
+	get_and_apply_rotation_matrix(theta.x, X, &cam.orientation);
+	get_and_apply_rotation_matrix(theta.y, Y, &cam.orientation);
+	get_and_apply_rotation_matrix(theta.z, Z, &cam.orientation);
 	dist_scene = raymarch(cam, &s, s.obj_list);
 	if (dist_scene <= MAX_DIST)
 	{
@@ -108,10 +112,8 @@ t_rgb	get_pixel_color(t_vec2i pixel, t_scene s, t_cam cam)
 		};
 	}
 	else
-	{
-		color = (t_rgb){255,255,255};
-		color = vec3f_mult_scal(s.amb_light.color, s.amb_light.ratio);
-	}
+		color = (t_rgb){0,0,0};
+//		color = vec3f_mult_scal(s.amb_light.color, s.amb_light.ratio);
 	return (color);
 }
 

@@ -10,10 +10,10 @@
 |-----------------------------+---------+--------+-----|
 | make re lag                 |         | DONE   | Y   |
 |-----------------------------+---------+--------+-----|
-| objects:                    |         |        |     |
+| objects:                    |         | DONE   |     |
 | -plane                      | y       |        |     |
 | -sphere                     | y       |        |     |
-| -cylinder                   |         |        |     |
+| -cylinder                   | y       |        |     |
 |-----------------------------+---------+--------+-----|
 | light management:           |         | DONE   | Y   |
 | -spot brightness            | y       |        |     |
@@ -22,9 +22,9 @@
 | -diffuse lighting           | y       |        |     |
 |-----------------------------+---------+--------+-----|
 | camera system:              |         |        |     |
-| -position                   |         |        |     |
-| -direction                  |         |        |     |
-| -world coordinates????      |         |        |     |
+| -fov                        |         |        |     |
+| -position                   | y       |        |     |
+| -direction                  | y       |        |     |
 |-----------------------------+---------+--------+-----|
 | update parser:              |         | DONE   | Y   |
 | -singular declarations      | y       |        |     |
@@ -36,11 +36,10 @@
 | mlx related shit            |         |        |     |
 | -mlx from sources?          |         |        |     |
 | -free img_data?             | y       |        |     |
+| -leaks                      |         |        |     |
 |-----------------------------+---------+--------+-----|
 | bonus:                      |         |        |     |
 | -phong                      | y       |        |     |
-| -checkerboard               |         |        |     |
 | -multi spots + color        | added   |        |     |
 | -2nd degree object          |         |        |     |
-| -bump map textures          |         |        |     |
 |-----------------------------+---------+--------+-----|

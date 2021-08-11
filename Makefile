@@ -28,6 +28,7 @@ OBJS_PARSER = $(addprefix $(OBJS_PARSER_PATH)/,$(OBJS_PARSER_NAME))
 
 SRCS_UTILS_PATH		=	./srcs/utils
 SRCS_UTILS_NAME		=	mat3.c			\
+				mat4.c			\
 				maths_utils.c		\
 				vec2f.c			\
 				vec2f_ops.c		\

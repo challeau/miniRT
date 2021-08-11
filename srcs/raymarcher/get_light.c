@@ -68,15 +68,55 @@ t_rgb	diffuse_light(t_vec3f surf_point, t_scene s, t_light light)
 	return (diffuse_light);
 }
 
+/* returns the reflection direction for a given incident vector vec and */
+/* surface normal surf_norm. */
+/* surf_norm should be normalized in order to achieve the desired result. */
+t_vec3f	reflect(t_vec3f vec, t_vec3f surf_norm)
+{
+	t_vec3f	res;
+	t_vec3f	inv_vec;
+
+	inv_vec = (t_vec3f){-vec.x, -vec.y, -vec.z};
+	res = vec3f_mult_scal(surf_norm, 2.0 * vec3f_dot(surf_norm, inv_vec));
+	res = vec3f_sub_vec(inv_vec, res);
+	return (res);
+}
+
+t_rgb	phong(t_vec3f surf_point, t_scene s, t_light light)
+{
+	t_vec3f	surf_normal;
+	t_vec3f	light_dir;
+	t_vec3f	reflect_dir;
+	float		spec;
+	t_rgb		specular;
+	t_cam		shade_cam;
+
+	surf_normal = get_surface_normal(surf_point, s, s.obj_list);
+	light_dir = vec3f_normalize(vec3f_sub_vec(light.pos, surf_point));
+	reflect_dir = reflect(light_dir, surf_normal);
+	spec = pow(fmax(vec3f_dot(s.cam.orientation, reflect_dir), 0.0), 64); //shininess
+	specular = vec3f_mult_scal(light.color, spec * 0.5);
+	shade_cam.pos = light.pos;
+	shade_cam.orientation = light_dir;
+	if (raymarch(shade_cam, &s, s.obj_list) <= vec3f_magnitude(surf_point,
+								light.pos))
+		specular =  (t_rgb){0,0,0};
+	return (specular);
+}
+
+
 t_rgb	get_light(t_vec3f surf_point, t_scene s, t_rgb obj_color)
 {
 	t_rgb	color;
 	t_rgb	ambient;
 	t_rgb	diffuse;
+	t_rgb	specular;;
 
 	ambient = vec3f_mult_scal(s.amb_light.color, s.amb_light.ratio);
 	diffuse = diffuse_light(surf_point, s, *s.lights_list);
-	color = vec3f_add_vec(ambient, diffuse);
+	specular = phong(surf_point, s, *s.lights_list);
+//	color = vec3f_add_vec(ambient, diffuse);
+	color = vec3f_add_vec(vec3f_add_vec(ambient, diffuse), specular);
 	color = vec3f_mult_vec(color, obj_color);
 	if (get_shadow(surf_point, s, s.obj_list, *s.lights_list) == true)
 		color = vec3f_lerp((t_vec3f){0,0,0}, color, s.amb_light.ratio);

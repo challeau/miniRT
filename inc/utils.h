@@ -87,8 +87,11 @@ void	get_pitch_matrix(float theta, t_vec3f mat[3]);
 void	get_yaw_matrix(float theta, t_vec3f mat[3]);
 void	get_and_apply_rotation_matrix(float theta, enum e_axis axis,
 				t_vec3f *vec_addr);
-/* mat4 */
 
+/* mat4 */
+void	get_vec4_identity_matrix(t_vec4f mat[4]);
+void	get_and_apply_translation_matrix(t_vec3f *target_addr,
+					 t_vec3f trans_vec);
 
 /* vector-matrice operations */
 t_vec3f	vec3f_mult_mat3(t_vec3f a, t_vec3f mat[3]);

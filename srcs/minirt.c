@@ -50,8 +50,8 @@ bool	setup(t_mlx *mlx, t_scene *s, int ac, char **av)
 
 int	main(int ac, char **av)
 {
-	t_scene		s;
-	t_mlx	mlx;
+	t_scene	s;
+	t_mlx		mlx;
 
 	if (setup(&mlx, &s, ac, av) == false)
 		exit_failure();
