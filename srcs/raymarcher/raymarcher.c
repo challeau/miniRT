@@ -1,4 +1,5 @@
 #include "../../inc/miniRT.h"
+
 /*
 ** calculates the distance between p, an arbitrary point in 3D space and
 ** all the objects in the scene.
@@ -17,7 +18,6 @@ float	get_dist(t_vec3f p, t_scene *s, t_object *list)
 	sdfs[1] = &sdf_plane;
 	sdfs[2] = &sdf_cylinder;
 	sdfs[3] = &sdf_cone;
-
 	while (list[i].type != e_OBJ_NONE && i < 20)
 	{
 		buff_dist = sdfs[list[i].type](p, list[i]);
@@ -62,19 +62,25 @@ float	raymarch(t_cam cam, t_scene *s, t_object *list)
 */
 void	get_cam_look_at(t_cam *cam)
 {
-	t_vec3f cam_back = vec3f_normalize(vec3f_sub_vec((t_vec3f){0,0,0},
+	t_vec3f up = {0, 1, 0};
+	t_vec3f cam_back = vec3f_normalize(vec3f_sub_vec(cam->orientation,
 							cam->pos));
 	t_vec3f cam_right = vec3f_normalize(
-		vec3f_cross_product((t_vec3f){0,1,0}, cam_back));
-	t_vec3f cam_up = vec3f_cross_product(cam_back, cam_right);
+		vec3f_cross_product(cam_back, up));
+	t_vec3f cam_up = vec3f_cross_product(cam_right, cam_back);
 
-	cam->axis[0] = cam_right;
-	cam->axis[1] = cam_up;
-	cam->axis[2] = cam_back;
-	cam->axis[3] = cam->pos;
-	cam->orientation.x = cos(cam->orientation.y) * cos(cam->orientation.x);
-	cam->orientation.y = sin(cam->orientation.x);
-	cam->orientation.z = sin(cam->orientation.y) * cos(cam->orientation.x);
+	cam->axis[0] = (t_vec4f){cam_right.x, cam_right.y, cam_right.z, 0};
+	cam->axis[1] = (t_vec4f){cam_up.x, cam_up.y, cam_up.z, 0};
+	cam->axis[2] = (t_vec4f){-cam_back.x, -cam_back.y, -cam_back.z, 0};
+	cam->axis[3] = (t_vec4f){0, 0, 0, 1};
+}
+
+t_vec3f get_cam_dir(t_vec2i pos, t_vec2f size, float fov)
+{
+	t_vec2f xy = vec2f_sub_vec((t_vec2f){pos.x, pos.y},
+				   vec2f_div_scal(size, 2));
+	float z = size.y / tan((fov * (M_PI / 180.0) / 2));
+	return (vec3f_normalize((t_vec3f){xy.x, -xy.y, -z}));
 }
 
 /*
@@ -90,14 +96,17 @@ t_rgb	get_pixel_color(t_vec2i pixel, t_scene s, t_cam cam)
 	t_rgb		color;
 	float		dist_scene;
 	t_vec3f	surf_point;
-	t_vec3f	theta = cam.orientation;
+//	t_vec3f	theta = cam.orientation;
 
-	uv = (t_vec3f){(pixel.x - 0.5 * s.win_res.x) / s.win_res.y,
-			-((pixel.y - 0.5 * s.win_res.y) / s.win_res.y), 1};
-	cam.orientation =  vec3f_normalize((t_vec3f){uv.x, uv.y, 1});
-	get_and_apply_rotation_matrix(theta.x, X, &cam.orientation);
-	get_and_apply_rotation_matrix(theta.y, Y, &cam.orientation);
-	get_and_apply_rotation_matrix(theta.z, Z, &cam.orientation);
+//	uv = (t_vec3f){(pixel.x - 0.5 * s.win_res.x) / s.win_res.y,
+//			-((pixel.y - 0.5 * s.win_res.y) / s.win_res.y), 1};
+	uv = get_cam_dir(pixel, (t_vec2f){s.win_res.x, s.win_res.y} , cam.fov);
+	get_cam_look_at(&cam);
+	cam.orientation = vec3f_mult_mat4(uv, cam.axis);
+	/* cam.orientation =  vec3f_normalize((t_vec3f){uv.x, uv.y, 1}); */
+	/* get_and_apply_rotation_matrix(theta.x, X, &cam.orientation); */
+	/* get_and_apply_rotation_matrix(theta.y, Y, &cam.orientation); */
+	/* get_and_apply_rotation_matrix(theta.z, Z, &cam.orientation); */
 	dist_scene = raymarch(cam, &s, s.obj_list);
 	if (dist_scene <= MAX_DIST)
 	{
