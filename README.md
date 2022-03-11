@@ -1,5 +1,5 @@
 # miniRT
-My first sphere tracer.<br/>
+My first raymarcher.<br/>
 A program that renders planes, spheres, and cylinders. It takes as argument a .rt scene file that contains all the elements for rendering: ambient lighting, camera, optional spot lights, and objects. You can find some examples in srcs/scenes.<br/>
 _Examples at the bottom._
 
@@ -11,7 +11,7 @@ _Examples at the bottom._
 <br/>
 
 # miniRT - Français
-Mon premier sphere tracer.<br/>
+Mon premier raymarcher.<br/>
 Un programme qui rend des plans, des sphères et des cylindres. Il prend comme argument un fichier de scène .rt qui contient tous les éléments pour le rendu : éclairage ambiant, caméra, projecteurs et objets. Vous pouvez trouver quelques exemples dans srcs/scenes.
 
 ## Utilisation
