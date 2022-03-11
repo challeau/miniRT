@@ -94,8 +94,8 @@ t_rgb	phong(t_vec3f surf_point, t_scene s, t_light light)
 	surf_normal = get_surface_normal(surf_point, s, s.obj_list);
 	light_dir = vec3f_normalize(vec3f_sub_vec(light.pos, surf_point));
 	reflect_dir = reflect(light_dir, surf_normal);
-	spec = pow(fmax(vec3f_dot(s.cam.orientation, reflect_dir), 0.0), 64); //shininess
-	specular = vec3f_mult_scal(light.color, spec * 0.5);
+	spec = pow(fmax(vec3f_dot(s.cam.orientation, reflect_dir), 0.0), 256); //shininess
+	specular = vec3f_mult_scal(light.color, spec * 1.0);
 	shade_cam.pos = light.pos;
 	shade_cam.orientation = light_dir;
 	if (raymarch(shade_cam, &s, s.obj_list) <= vec3f_magnitude(surf_point,

@@ -25,7 +25,7 @@ typedef struct s_cam {
 	t_vec3f	pos;
 	t_vec3f	orientation;
 	uint8_t	fov;
-	t_vec4f	axis[4];
+	t_vec3f	axis[4];
 }		t_cam;
 
 enum		e_elements {
